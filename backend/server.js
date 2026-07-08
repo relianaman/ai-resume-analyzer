@@ -12,7 +12,7 @@ app.use(express.json({ limit: '10mb' }));
 // Serve frontend static files
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-app.post('/api/analyze', async (req, res) => {
+app.post('/api/review-resume', async (req, res) => {
     const { resumeText, filePayload, jobDescription } = req.body;
 
     if (!resumeText && !filePayload) {

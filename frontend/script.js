@@ -141,10 +141,9 @@ async function callLocalBackendAPI(resumeText, filePayload, jobDesc) {
     // Automatically switch between local testing and live deployed backend
     const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
-    // TODO: Replace the live URL below with your actual Render.com URL later!
-    const backendBaseUrl = isLocalhost ? 'http://localhost:3000' : 'https://ai-resume-backend-xxxx.onrender.com';
+    const backendBaseUrl = isLocalhost ? 'http://localhost:3000' : 'https://ai-resume-analyzer-eyq3.onrender.com';
 
-    const endpoint = `${backendBaseUrl}/api/analyze`;
+    const endpoint = `${backendBaseUrl}/api/review-resume`;
 
     const requestBody = {
         resumeText: resumeText,
