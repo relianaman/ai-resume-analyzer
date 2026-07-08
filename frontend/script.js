@@ -46,14 +46,14 @@ dropZone.addEventListener('drop', (e) => {
     handleFiles(files);
 });
 
-fileInput.addEventListener('change', function() {
+fileInput.addEventListener('change', function () {
     handleFiles(this.files);
 });
 
 function handleFiles(files) {
     if (files.length > 0) {
         const file = files[0];
-        
+
         if (!file.name.toLowerCase().match(/\.(pdf|doc|docx)$/)) {
             alert('Please upload a PDF or Word document (.docx).');
             return;
@@ -63,7 +63,7 @@ function handleFiles(files) {
         fileNameDisplay.textContent = file.name;
         fileNameDisplay.style.display = 'block';
         analyzeBtn.disabled = false;
-        
+
         processFile(file);
     }
 }
@@ -71,7 +71,7 @@ function handleFiles(files) {
 async function processFile(file) {
     try {
         const extension = file.name.split('.').pop().toLowerCase();
-        
+
         if (extension === 'pdf') {
             const base64 = await fileToBase64(file);
             filePayload = {
@@ -108,7 +108,7 @@ function fileToBase64(file) {
 // Analyze Button Click
 analyzeBtn.addEventListener('click', async () => {
     const jobDescription = jobDescriptionInput.value.trim();
-    
+
     if (!extractedText && !filePayload) {
         alert("No resume data found. Please wait or upload again.");
         return;
@@ -118,16 +118,16 @@ analyzeBtn.addEventListener('click', async () => {
     analyzeBtn.disabled = true;
     loadingSpinner.classList.remove('hidden');
     resultsSection.classList.add('hidden');
-    
+
     try {
         const analysis = await callLocalBackendAPI(extractedText, filePayload, jobDescription);
         updateDashboard(analysis);
-        
+
         // UI State: Done
         loadingSpinner.classList.add('hidden');
         resultsSection.classList.remove('hidden');
         resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        
+
     } catch (error) {
         console.error(error);
         alert(`Analysis failed: ${error.message}`);
@@ -140,14 +140,12 @@ analyzeBtn.addEventListener('click', async () => {
 async function callLocalBackendAPI(resumeText, filePayload, jobDesc) {
     // Automatically switch between local testing and live deployed backend
     const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    
+
     // TODO: Replace the live URL below with your actual Render.com URL later!
-    const backendBaseUrl = isLocalhost 
-        ? 'http://localhost:3000' 
-        : 'https://my-ai-resume-backend.onrender.com'; 
-        
+    const backendBaseUrl = isLocalhost ? 'http://localhost:3000' : 'https://ai-resume-backend-xxxx.onrender.com';
+
     const endpoint = `${backendBaseUrl}/api/analyze`;
-    
+
     const requestBody = {
         resumeText: resumeText,
         filePayload: filePayload,
@@ -177,16 +175,16 @@ function updateDashboard(data) {
     const score = data.atsScore || 0;
     scoreNumber.textContent = score;
     scoreMessage.textContent = data.scoreMessage || "";
-    
+
     // Calculate SVG circle stroke dashoffset
     // radius = 40, circumference = 2 * Math.PI * 40 = 251.2
     const circumference = 251.2;
     const offset = circumference - (score / 100) * circumference;
-    
+
     // Slight timeout for animation effect
     setTimeout(() => {
         scoreMeter.style.strokeDashoffset = offset;
-        
+
         // Color based on score
         if (score >= 80) {
             scoreMeter.style.stroke = "var(--success)";
@@ -232,6 +230,6 @@ function updateDashboard(data) {
     } else {
         improvementsContent.innerHTML = "<p>No suggestions provided.</p>";
     }
-    
+
     analyzeBtn.disabled = false;
 }
