@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Analyzer</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- pdf.js for client side PDF parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+
+    <!-- marked.js for markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- mammoth.js for docx parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1><i class="ri-robot-2-line"></i> AI Resume Analyzer</h1>
+            <p>Optimize your resume for ATS and get actionable feedback using AI.</p>
+        </header>
+
+        <main>
+            <div class="input-section glass-panel">
+                <h2>1. Configuration</h2>
+                
+                <div class="form-group">
+                    <label for="job-description">Target Job Description</label>
+                    <div class="input-wrapper textarea-wrapper">
+                        <i class="ri-briefcase-line"></i>
+                        <textarea id="job-description" rows="4" placeholder="Paste the job description here for better ATS scoring and tailored feedback..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="upload-section glass-panel">
+                <h2>2. Upload Resume</h2>
+                
+                <div class="drop-zone" id="drop-zone">
+                    <i class="ri-upload-cloud-2-line upload-icon"></i>
+                    <p class="drop-text">Drag & drop your resume (PDF, DOCX) here</p>
+                    <p class="or-text">OR</p>
+                    <input type="file" id="file-input" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
+                    <button class="btn-primary" onclick="document.getElementById('file-input').click()">Browse Files</button>
+                    <p class="file-name" id="file-name"></p>
+                </div>
+
+                <button id="analyze-btn" class="btn-analyze" disabled>
+                    <i class="ri-magic-line"></i> Analyze Resume
+                </button>
+                
+                <div id="loading-spinner" class="loading-container hidden">
+                    <div class="spinner"></div>
+                    <p>AI is analyzing your resume...</p>
+                </div>
+            </div>
+
+            <div id="results-section" class="results-section hidden">
+                <div class="results-header">
+                    <h2>Analysis Results</h2>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <!-- ATS Score Card -->
+                    <div class="card score-card glass-panel">
+                        <h3>ATS Match Score</h3>
+                        <div class="circular-progress">
+                            <svg viewBox="0 0 100 100">
+                                <circle class="bg" cx="50" cy="50" r="40"></circle>
+                                <circle class="meter" cx="50" cy="50" r="40" id="score-meter"></circle>
+                            </svg>
+                            <div class="score-value">
+                                <span id="score-number">0</span>%
+                            </div>
+                        </div>
+                        <p id="score-message" class="score-message">Awaiting analysis</p>
+                    </div>
+
+                    <!-- Extracted Skills -->
+                    <div class="card skills-card glass-panel">
+                        <h3><i class="ri-award-line"></i> Extracted Skills</h3>
+                        <div id="extracted-skills" class="tags-container">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Missing Keywords -->
+                    <div class="card missing-card glass-panel">
+                        <h3><i class="ri-search-eye-line"></i> Missing Keywords</h3>
+                        <div id="missing-keywords" class="tags-container missing">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Improvements Section -->
+                <div class="card improvements-card glass-panel full-width">
+                    <h3><i class="ri-lightbulb-flash-line"></i> Improvement Suggestions</h3>
+                    <div id="improvements-content" class="markdown-content">
+                        <!-- Markdown populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Built with <i class="ri-heart-fill"></i> and Google Gemini API</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
