@@ -508,6 +508,27 @@ footer i {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+        gap: 1.5rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.3rem;
+    }
+
+    .glass-panel {
+        padding: 1.5rem;
+    }
+
+    .drop-zone {
+        padding: 2rem 1rem;
+    }
+
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
@@ -515,5 +536,40 @@ footer i {
     .score-card {
         grid-column: 1 / -1;
         grid-row: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0.5rem;
+    }
+
+    .glass-panel {
+        padding: 1.2rem;
+    }
+
+    h1 {
+        font-size: 1.75rem;
+        flex-direction: column;
+        gap: 5px;
+        text-align: center;
+    }
+
+    .btn-analyze {
+        font-size: 1.1rem;
+        padding: 12px;
+    }
+
+    .circular-progress {
+        width: 120px;
+        height: 120px;
+    }
+
+    .score-value {
+        font-size: 1.5rem;
+    }
+
+    .score-value span {
+        font-size: 2rem;
     }
 }
